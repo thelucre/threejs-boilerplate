@@ -1,0 +1,13 @@
+{
+  "name": "app-name",
+  "version": "0.0.1",
+  "directory" : "vendor",
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "lodash": "*",
+    "backbone": "*",
+    "bkwld": "bkwld/js-library",
+    "threejs": "*"
+  },
+  "private": true
+}

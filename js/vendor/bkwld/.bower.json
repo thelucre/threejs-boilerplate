@@ -1,0 +1,37 @@
+{
+  "name": "js-library",
+  "version": "0.10.0",
+  "homepage": "https://github.com/BKWLD/js-library",
+  "authors": [
+    "Robert Reinhard <info@bkwld.com>",
+    "Matt Aebersold <info@bkwld.com>"
+  ],
+  "description": "JS utility modules",
+  "main": "./",
+  "dependencies": {
+    "jquery": "~1",
+    "lodash": "~2",
+    "backbone": "~1"
+  },
+  "keywords": [
+    "bkwld",
+    "js",
+    "amd",
+    "utils"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "README.md"
+  ],
+  "_release": "0.10.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.10.0",
+    "commit": "7774726ddfe0b780d51b74ec14e6257404ce2b92"
+  },
+  "_source": "git://github.com/bkwld/js-library.git",
+  "_target": "*",
+  "_originalSource": "bkwld/js-library"
+}
