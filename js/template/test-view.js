@@ -90,8 +90,9 @@ define(function(require) {
 			function ( geometry, materials ) { 
 				console.log(geometry);
 				console.log(materials);
-				var material = new THREE.MeshBasicMaterial({ wireframe : false }); 
+				var material = new THREE.MeshPhongMaterial({ wireframe : false, shading : THREE.FlatShading }); 
 				var object = new THREE.Mesh( geometry, material ); 
+				object.position.set(0,0,-5);
 				scene.add( object ); 
 			} 
 		);
