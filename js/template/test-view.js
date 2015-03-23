@@ -3,7 +3,8 @@ define(function(require) {
 	// Dependencies
 	var $ = require('jquery'),
 		_ = require('underscore'),
-		Backbone = require('backbone');
+		Backbone = require('backbone'),
+		TestModel = require('template/test-model');
 
 	// Init view
 	var View = {};
@@ -17,7 +18,7 @@ define(function(require) {
 	// Constructor
 	View.initialize = function() {
 		_.bindAll(this);
-		
+
 		// Selectors
 		this.$win = $(window);
 
@@ -78,24 +79,8 @@ define(function(require) {
 		// var mesh	= new THREE.Mesh( geometry, material ); 
 		// scene.add( mesh );
 
-		// load a JSON mesh
-		// instantiate a loader 
-		var loader = new THREE.JSONLoader(); 
-		// load a resource 
-		loader.load( 
-			// resource URL 
-			'models/head.json', 
-
-			// Function when resource is loaded 
-			function ( geometry, materials ) { 
-				console.log(geometry);
-				console.log(materials);
-				var material = new THREE.MeshPhongMaterial({ wireframe : false, shading : THREE.FlatShading }); 
-				var object = new THREE.Mesh( geometry, material ); 
-				object.position.set(0,0,-5);
-				scene.add( object ); 
-			} 
-		);
+		// add a test model 
+		this.testModel = new TestModel({ scene : scene });
 
 		this.animate();
 	};
@@ -107,6 +92,8 @@ define(function(require) {
 		// - it has to be at the begining of the function
 		// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 		requestAnimationFrame( this.animate );
+
+		this.testModel.update();
 
 		// do the render
 		this.render();
@@ -121,7 +108,7 @@ define(function(require) {
 		var PIseconds	= Date.now() * Math.PI;
 
 		// update camera controls
-		cameraControls.update();
+		//cameraControls.update();
 
 		// // animation of all objects
 		// scene.traverse(function(object3d, i){
