@@ -14,6 +14,7 @@ define(function(require) {
 	// Global view properties
 	var stats, scene, renderer, composer;
 	var camera, cameraControl, uniforms;
+	var srcDir = 'js/vendor/threejs/examples/js/';
 	
 	// Constructor
 	View.initialize = function() {
@@ -21,6 +22,15 @@ define(function(require) {
 
 		// Selectors
 		this.$win = $(window);
+
+		this.options = {
+			postprocessing: true,
+			jiggle: true
+		};
+
+		var gui = new dat.GUI();
+		gui.add(this.options, 'postprocessing');
+		gui.add(this.options, 'jiggle');
 
 		if( Detector.webgl ){
 			renderer = new THREE.WebGLRenderer({
@@ -33,6 +43,18 @@ define(function(require) {
 			renderer	= new THREE.CanvasRenderer();
 		}
 
+		// load non-AMD THREEjs 
+		require([
+			srcDir + 'shaders/CopyShader.js',
+			srcDir + 'postprocessing/ShaderPass.js',
+			srcDir + 'shaders/DotScreenShader.js',
+			srcDir + 'postprocessing/RenderPass.js',
+			srcDir + 'postprocessing/MaskPass.js',
+			srcDir + 'postprocessing/EffectComposer.js'
+		], this.onDependencyLoad);
+	};
+
+	View.onDependencyLoad = function() {
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.setClearColor( 0x000000, 0 ); // the default
 		document.getElementById('container').appendChild(renderer.domElement);
@@ -65,6 +87,20 @@ define(function(require) {
 		// add a Pulse Cube  
 		this.pulseCube = new PulseCube({ scene : scene });
 
+
+		/***************************
+		 * POST PROCESSING SHADERS
+		 ***************************/
+		composer = new THREE.EffectComposer( renderer );
+		composer.addPass( new THREE.RenderPass( scene, camera ) );
+
+		var dotScreenEffect = new THREE.ShaderPass( THREE.DotScreenShader );
+		dotScreenEffect.uniforms[ 'scale' ].value = 4;
+
+		// ! The last post procesing effect should set renderToScreen to true
+		dotScreenEffect.renderToScreen = true;
+		composer.addPass( dotScreenEffect );
+
 		this.animate();
 	};
 
@@ -76,7 +112,7 @@ define(function(require) {
 		// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 		requestAnimationFrame( this.animate );
 
-		this.pulseCube.update();
+		this.pulseCube.update(this.options.jiggle);
 
 		// do the render
 		this.render();
@@ -92,7 +128,10 @@ define(function(require) {
 		cameraControls.update();
 
 		// actually render the scene
-		renderer.render( scene, camera );
+		if(this.options.postprocessing)
+			composer.render( scene, camera );
+		else 
+			renderer.render( scene, camera );
 	}
 	
 	// Return the view

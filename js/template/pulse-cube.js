@@ -30,7 +30,6 @@
 		this.uniforms = {
 		  delta: {type: 'f', value: 0.0},
 		  scale: {type: 'f', value: 1.0},
-		  alpha: {type: 'f', value: 1.0}
 		};
 
 		this.material = new THREE.ShaderMaterial({
@@ -48,8 +47,9 @@
 		this.scene.add( mesh );
 	};
 
-	Model.update = function() {
-		this.uniforms.delta.value += 0.1;
+	Model.update = function(shouldJiggle) {
+		if(shouldJiggle)
+			this.uniforms.delta.value += 0.1;
 	};
 	
 	// Return the model
