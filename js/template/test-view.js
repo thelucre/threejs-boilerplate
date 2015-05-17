@@ -4,16 +4,16 @@ define(function(require) {
 	var $ = require('jquery'),
 		_ = require('underscore'),
 		Backbone = require('backbone'),
-		TestModel = require('template/test-model');
+		PulseCube = require('template/pulse-cube');
+
+	require('text');
 
 	// Init view
 	var View = {};
 
-	console.log(Detector);
-
 	// Global view properties
 	var stats, scene, renderer, composer;
-	var camera, cameraControl;
+	var camera, cameraControl, uniforms;
 	
 	// Constructor
 	View.initialize = function() {
@@ -32,6 +32,7 @@ define(function(require) {
 		}else{
 			renderer	= new THREE.CanvasRenderer();
 		}
+
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.setClearColor( 0x000000, 0 ); // the default
 		document.getElementById('container').appendChild(renderer.domElement);
@@ -53,34 +54,16 @@ define(function(require) {
 		// create a camera contol
 		cameraControls	= new THREEx.DragPanControls(camera)
 
+		/***************************
+		 * CREATE SCENE OBJECTS
+		 ***************************/
 		// here you add your objects
 		// - you will most likely replace this part by your own
-		var light	= new THREE.AmbientLight( Math.random() * 0xffffff );
-		scene.add( light );
-		var light	= new THREE.DirectionalLight( Math.random() * 0xffffff );
-		light.position.set( Math.random(), Math.random(), Math.random() ).normalize();
-		scene.add( light );
-		var light	= new THREE.DirectionalLight( Math.random() * 0xffffff );
-		light.position.set( Math.random(), Math.random(), Math.random() ).normalize();
-		scene.add( light );
-		var light	= new THREE.PointLight( Math.random() * 0xffffff );
-		light.position.set( Math.random()-0.5, Math.random()-0.5, Math.random()-0.5 )
-					.normalize().multiplyScalar(1.2);
-		scene.add( light );
-		var light	= new THREE.PointLight( Math.random() * 0xffffff );
-		light.position.set( Math.random()-0.5, Math.random()-0.5, Math.random()-0.5 )
-					.normalize().multiplyScalar(1.2);
+		var light	= new THREE.AmbientLight( 0x88E9CC);
 		scene.add( light );
 
-
-		// simple cube
-		// var geometry	= new THREE.CubeGeometry( 2, 2, 2 );
-		// var material	= new THREE.MeshPhongMaterial({ambient: 0x808080, color: Math.random() * 0xffffff});
-		// var mesh	= new THREE.Mesh( geometry, material ); 
-		// scene.add( mesh );
-
-		// add a test model 
-		this.testModel = new TestModel({ scene : scene });
+		// add a Pulse Cube  
+		this.pulseCube = new PulseCube({ scene : scene });
 
 		this.animate();
 	};
@@ -93,7 +76,7 @@ define(function(require) {
 		// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 		requestAnimationFrame( this.animate );
 
-		this.testModel.update();
+		this.pulseCube.update();
 
 		// do the render
 		this.render();
@@ -104,24 +87,9 @@ define(function(require) {
 
 	// render the scene
 	View.render = function() {
-		// variable which is increase by Math.PI every seconds - usefull for animation
-		var PIseconds	= Date.now() * Math.PI;
 
 		// update camera controls
-		//cameraControls.update();
-
-		// // animation of all objects
-		// scene.traverse(function(object3d, i){
-		// 	if( object3d instanceof THREE.Mesh === false )	return
-		// 	object3d.rotation.y = PIseconds*0.0003 * (i % 2 ? 1 : -1);
-		// 	object3d.rotation.x = PIseconds*0.0002 * (i % 2 ? 1 : -1);
-		// })
-		// // animate PointLights
-		// scene.traverse(function(object3d, idx){
-		// 	if( object3d instanceof THREE.PointLight === false )	return
-		// 	var angle	= 0.0005 * PIseconds * (idx % 2 ? 1 : -1) + idx * Math.PI/3;
-		// 	object3d.position.set(Math.cos(angle)*3, Math.sin(angle*3)*2, Math.cos(angle*2)).normalize().multiplyScalar(2);
-		// })
+		cameraControls.update();
 
 		// actually render the scene
 		renderer.render( scene, camera );

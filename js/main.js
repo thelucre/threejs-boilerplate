@@ -21,7 +21,8 @@ require.config({
 		threex: 'vendor/threex',
 		detector: 'vendor/utils/Detector',
 		stats: 'vendor/utils/Stats',
-		dragPanControls: 'vendor/threex.dragpancontrols'
+		dragPanControls: 'vendor/threex.dragpancontrols',
+		text: 'vendor/text/text'
 	},
 	packages: [
 
