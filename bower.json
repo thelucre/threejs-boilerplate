@@ -7,7 +7,8 @@
     "lodash": "*",
     "backbone": "*",
     "bkwld": "bkwld/js-library",
-    "threejs": "*"
+    "threejs": "*",
+    "text" : "*"
   },
   "private": true
 }
