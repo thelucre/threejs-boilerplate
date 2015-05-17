@@ -22,7 +22,8 @@ require.config({
 		detector: 'vendor/utils/Detector',
 		stats: 'vendor/utils/Stats',
 		dragPanControls: 'vendor/threex.dragpancontrols',
-		text: 'vendor/text/text'
+		text: 'vendor/text/text',
+		datgui: 'vendor/dat-gui/build/dat.gui'
 	},
 	packages: [
 
@@ -30,4 +31,4 @@ require.config({
 });
 
 // Start the application
-require(['start']);
+require(['datgui','start']);

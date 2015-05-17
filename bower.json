@@ -8,7 +8,8 @@
     "backbone": "*",
     "bkwld": "bkwld/js-library",
     "threejs": "*",
-    "text" : "*"
+    "text" : "*",
+    "dat-gui": "*"
   },
   "private": true
 }
