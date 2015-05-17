@@ -11,8 +11,12 @@
 <body>
 	<!-- three.js container -->
     <div id="container"></div>
-
 	<script type="text/javascript" src="js/vendor/require-jquery.js"></script>
+	<script type="text/javascript">
+    	require.config({
+		    urlArgs: "bust=" + (new Date()).getTime()
+		});
+    </script>
 	<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
