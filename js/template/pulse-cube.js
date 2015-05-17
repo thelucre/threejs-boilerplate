@@ -27,29 +27,44 @@
 		
 		this.attributes = {};
 
-		this.uniforms = {
+		this.uniforms = THREE.UniformsUtils.merge([
+        	THREE.UniformsLib['lights'],{
 		  delta: {type: 'f', value: 0.0},
 		  scale: {type: 'f', value: 1.0},
-		};
+		  alpha: {type: 'f', value: 0.5}
+		}]);;
 
 		this.material = new THREE.ShaderMaterial({
 		  	uniforms: this.uniforms,
 		  	attributes: this.attributes,
 		  	vertexShader:   require('text!shaders/pulse.vert'),
 			fragmentShader: require('text!shaders/pulse.frag'),
-		  	transparent: true
+		  	transparent: true,
+		  	lights: true
 		});
 
 		// simple cube
 		var geometry	= new THREE.BoxGeometry( 2, 2, 2 );
 		var material	= new THREE.MeshPhongMaterial({ ambient: 0x808080 });
-		var mesh	= new THREE.Mesh( geometry, this.material ); 
-		this.scene.add( mesh );
+		this.mesh	= new THREE.Mesh( geometry, this.material ); 
+		this.scene.add( this.mesh );
+		console.log(this.mesh);
+
+		// LIGHT Orbits the cube
+		this.light	= new THREE.SpotLight( 0xFFFFFF);
+		this.light.position.set(10,2,2);
+		this.scene.add( this.light );
+
+		// light follows the cube
+		this.light.target = this.mesh;
 	};
 
 	Model.update = function(shouldJiggle) {
 		if(shouldJiggle)
-			this.uniforms.delta.value += 0.1;
+			this.uniforms.delta.value = window.time;
+
+		this.light.position.set( Math.sin(window.time * 3) * 5, Math.cos(window.time * 3) * 5, Math.sin(window.time/10) * 5 );
+
 	};
 	
 	// Return the model

@@ -12,9 +12,11 @@ define(function(require) {
 	var View = {};
 
 	// Global view properties
-	var stats, scene, renderer, composer;
+	var stats, scene, renderer, composer, light;
 	var camera, cameraControl, uniforms;
 	var srcDir = 'js/vendor/threejs/examples/js/';
+
+	window.time = 0;
 	
 	// Constructor
 	View.initialize = function() {
@@ -24,7 +26,7 @@ define(function(require) {
 		this.$win = $(window);
 
 		this.options = {
-			postprocessing: true,
+			postprocessing: false,
 			jiggle: true
 		};
 
@@ -79,14 +81,8 @@ define(function(require) {
 		/***************************
 		 * CREATE SCENE OBJECTS
 		 ***************************/
-		// here you add your objects
-		// - you will most likely replace this part by your own
-		var light	= new THREE.AmbientLight( 0x88E9CC);
-		scene.add( light );
-
 		// add a Pulse Cube  
 		this.pulseCube = new PulseCube({ scene : scene });
-
 
 		/***************************
 		 * POST PROCESSING SHADERS
@@ -108,9 +104,9 @@ define(function(require) {
 	View.animate = function() {
 
 		// loop on request animation loop
-		// - it has to be at the begining of the function
-		// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 		requestAnimationFrame( this.animate );
+
+		window.time += 0.01;
 
 		this.pulseCube.update(this.options.jiggle);
 
